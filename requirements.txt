@@ -1,0 +1,17 @@
+# Instagram scraping via Apify managed actor
+apify-client>=1.7.0
+
+# Google Gemini Vision API (free tier)
+google-generativeai==0.7.2
+
+# Image processing (logo overlay, PNG export)
+Pillow>=10.3.0
+
+# HTTP requests (infip.pro API + image downloads)
+requests>=2.31.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# Retry logic for flaky API calls (infip.pro, Gemini)
+tenacity>=8.2.3

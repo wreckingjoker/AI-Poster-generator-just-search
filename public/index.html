@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Just Search — AI Poster Generator</title>
+  <!-- Poppins font — official Just Search typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo-area">
+        <!-- Magnifying glass icon — matches brand iconography -->
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"/>
+            <line x1="16.5" y1="16.5" x2="22" y2="22"/>
+          </svg>
+        </div>
+        <div class="logo-text-wrap">
+          <div class="logo-wordmark">
+            <span class="logo-just">Just</span><span class="logo-search">Search</span>
+          </div>
+          <span class="logo-tagline">AI Poster Generator</span>
+        </div>
+      </a>
+      <nav class="site-nav">
+        <a href="/" class="nav-link active">Generator</a>
+        <a href="#history-section" class="nav-link">History</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Toast container ─────────────────────────────────────── -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ── Main content ────────────────────────────────────────── -->
+  <main class="page-wrap">
+
+    <h1 class="page-title">AI Poster Generator</h1>
+    <p class="page-subtitle">
+      Provide a client brief and let AI create on-brand social media posters in seconds.
+    </p>
+
+    <!-- ── Generator Form Card ─────────────────────────────── -->
+    <div class="card" id="form-card">
+      <div class="card-header">
+        <div class="card-header-inner">
+          <div class="card-title">
+            <div class="card-title-icon">&#9998;</div>
+            New Poster Brief
+          </div>
+          <p class="card-desc">Fill in the client details below to generate AI poster variations.</p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form id="poster-form" novalidate>
+
+          <!-- Section: Client ─────────────────────────────── -->
+          <p class="section-label">Client Details</p>
+
+          <!-- 1. Instagram Handle -->
+          <div class="form-group">
+            <label for="instagram-handle">Client Instagram Handle</label>
+            <input
+              type="text"
+              id="instagram-handle"
+              name="handle"
+              placeholder="@clienthandle"
+              autocomplete="off"
+              spellcheck="false"
+              required
+            />
+          </div>
+
+          <!-- 2. Poster Brief -->
+          <div class="form-group">
+            <label for="poster-brief">Poster Brief</label>
+            <textarea
+              id="poster-brief"
+              name="brief"
+              rows="4"
+              placeholder="Describe the poster: offer text, product name, campaign tone, any special requirements..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Section: Output Settings ───────────────────── -->
+          <p class="section-label">Output Settings</p>
+
+          <!-- 3. Two-column: Size + Variations -->
+          <div class="form-row form-group">
+            <div>
+              <label for="poster-size">Poster Size</label>
+              <select id="poster-size" name="size">
+                <option value="4:5" selected>Instagram Post 4:5 — 1080×1350</option>
+                <option value="1:1">Instagram Square 1:1 — 1080×1080</option>
+                <option value="story">Instagram Story 9:16 — 1080×1920</option>
+                <option value="landscape">Landscape 16:9 — 1200×628</option>
+              </select>
+            </div>
+            <div>
+              <label for="poster-variations">Variations</label>
+              <select id="poster-variations" name="variations">
+                <option value="1">1 variation</option>
+                <option value="2">2 variations</option>
+                <option value="3" selected>3 variations</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Section: Assets ────────────────────────────── -->
+          <p class="section-label">Assets</p>
+
+          <!-- 4. Logo Upload -->
+          <div class="form-group">
+            <label for="client-logo">Client Logo (PNG with transparency recommended)</label>
+            <div class="file-input-wrapper">
+              <input
+                type="file"
+                id="client-logo"
+                name="logo"
+                accept="image/*"
+              />
+            </div>
+            <span class="field-help">Already uploaded logos are remembered per client handle.</span>
+          </div>
+
+          <!-- 5. Submit -->
+          <button type="submit" class="btn-submit" id="submit-btn">
+            Generate Posters &#10022;
+          </button>
+
+        </form>
+      </div>
+    </div><!-- /form-card -->
+
+
+    <!-- ── Status Section ───────────────────────────────────── -->
+    <div class="card hidden" id="status-section" style="margin-top: 28px;">
+      <div class="card-header">
+        <div class="card-header-inner">
+          <div class="card-title">
+            <div class="card-title-icon">&#9654;</div>
+            Generation in Progress
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="job-id-badge" id="job-id-badge">
+          Job ID: <span id="job-id-value">—</span>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-steps" id="progress-steps">
+            <div class="progress-track" id="progress-track"></div>
+
+            <div class="progress-step" id="step-0" data-step="0">
+              <div class="step-dot">1</div>
+              <span class="step-label">Parse Brief</span>
+            </div>
+            <div class="progress-step" id="step-1" data-step="1">
+              <div class="step-dot">2</div>
+              <span class="step-label">Scraping</span>
+            </div>
+            <div class="progress-step" id="step-2" data-step="2">
+              <div class="step-dot">3</div>
+              <span class="step-label">Brand Analysis</span>
+            </div>
+            <div class="progress-step" id="step-3" data-step="3">
+              <div class="step-dot">4</div>
+              <span class="step-label">Prompts</span>
+            </div>
+            <div class="progress-step" id="step-4" data-step="4">
+              <div class="step-dot">5</div>
+              <span class="step-label">Generating</span>
+            </div>
+            <div class="progress-step" id="step-5" data-step="5">
+              <div class="step-dot">6</div>
+              <span class="step-label">Logo Overlay</span>
+            </div>
+            <div class="progress-step" id="step-6" data-step="6">
+              <div class="step-dot">7</div>
+              <span class="step-label">Export</span>
+            </div>
+          </div>
+          <p class="status-text" id="status-text">Initialising...</p>
+        </div>
+
+        <button class="btn btn-danger" id="cancel-btn" type="button" onclick="cancelJob()">
+          &#9632; Cancel Job
+        </button>
+      </div>
+    </div><!-- /status-section -->
+
+
+    <!-- ── Results Section ──────────────────────────────────── -->
+    <div class="card hidden" id="results-section" style="margin-top: 28px;">
+      <div class="card-header">
+        <div class="card-header-inner">
+          <div class="card-title">
+            <div class="card-title-icon">&#10003;</div>
+            Generated Posters
+          </div>
+          <p class="card-desc">Your AI-generated poster variations are ready to download.</p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="results-grid" id="results-grid"></div>
+
+        <div class="results-actions">
+          <button class="btn btn-approve" id="approve-btn" type="button" onclick="approveCurrentJob()">
+            &#10003; Mark as Approved
+          </button>
+          <button class="btn btn-outline" type="button" onclick="scrollToHistory()">
+            View History
+          </button>
+        </div>
+
+        <div class="accordion" id="brand-dna-accordion">
+          <button class="accordion-trigger" type="button" onclick="toggleAccordion(this)" aria-expanded="false">
+            <span>&#9998; Brand DNA Summary</span>
+            <span class="accordion-arrow">&#9660;</span>
+          </button>
+          <div class="accordion-body">
+            <div class="dna-grid" id="brand-dna-grid">
+              <p style="color:var(--muted-text);font-size:0.875rem;grid-column:1/-1;">No brand data available.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /results-section -->
+
+
+    <!-- ── Job History ───────────────────────────────────────── -->
+    <section class="history-section" id="history-section">
+      <div class="history-header">
+        <h2 class="history-title">Job History</h2>
+        <button class="btn btn-outline" type="button" onclick="loadJobHistory()">&#8635; Refresh</button>
+      </div>
+
+      <div class="table-wrap">
+        <table id="history-table">
+          <thead>
+            <tr>
+              <th>Handle</th>
+              <th>Job ID</th>
+              <th>Brief</th>
+              <th>Size</th>
+              <th>Vars</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <tr>
+              <td colspan="8">
+                <div class="history-empty">
+                  <div class="history-empty-icon">&#128196;</div>
+                  <span>No jobs yet — submit your first brief above.</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

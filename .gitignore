@@ -1,0 +1,35 @@
+# Environment secrets — NEVER commit
+.env
+
+# Temporary pipeline outputs (regeneratable)
+.tmp/
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Node artifacts
+node_modules/
+
+# Client logo files (uploaded by users, kept locally)
+clients/*/logo.png
+clients/*/logo.jpg
+clients/*/logo.jpeg
+
+# Job logs (local only, contain client data)
+jobs.csv
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/settings.json
+*.swp

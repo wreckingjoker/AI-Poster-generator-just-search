@@ -1,0 +1,18 @@
+Collecting apify-client
+  Downloading apify_client-2.5.0-py3-none-any.whl.metadata (18 kB)
+Collecting apify-shared<3.0.0,>=2.1.0 (from apify-client)
+  Downloading apify_shared-2.2.0-py3-none-any.whl.metadata (14 kB)
+Requirement already satisfied: colorama>=0.4.0 in c:\users\shonv\appdata\local\packages\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\localcache\local-packages\python310\site-packages (from apify-client) (0.4.6)
+Collecting impit>=0.9.2 (from apify-client)
+  Downloading impit-0.11.0-cp310-cp310-win_amd64.whl.metadata (2.9 kB)
+Requirement already satisfied: more-itertools>=10.0.0 in c:\users\shonv\appdata\local\packages\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\localcache\local-packages\python310\site-packages (from apify-client) (10.6.0)
+Downloading apify_client-2.5.0-py3-none-any.whl (86 kB)
+   ---------------------------------------- 87.0/87.0 kB 4.8 MB/s eta 0:00:00
+Downloading apify_shared-2.2.0-py3-none-any.whl (16 kB)
+Downloading impit-0.11.0-cp310-cp310-win_amd64.whl (3.6 MB)
+   ---------------------------------------- 3.6/3.6 MB 5.1 MB/s eta 0:00:00
+Installing collected packages: impit, apify-shared, apify-client
+Successfully installed apify-client-2.5.0 apify-shared-2.2.0 impit-0.11.0
+
+[notice] A new release of pip is available: 23.3.1 -> 26.0.1
+[notice] To update, run: C:\Users\shonv\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\python.exe -m pip install --upgrade pip
