@@ -83,6 +83,14 @@ function readJobsCsv() {
     });
 }
 
+function writeJobsCsv(jobs) {
+    const csvPath = path.join(BASE_DIR, 'jobs.csv');
+    const headers = 'job_id,client_handle,brief_summary,poster_size,brand_dna_version,prompt_used,variations,status,re_edit_count,total_cost_usd,created_at,approved_at,parent_job_id,output_paths';
+    const fields = headers.split(',');
+    const lines = jobs.map(job => fields.map(f => (job[f] || '')).join(','));
+    fs.writeFileSync(csvPath, [headers, ...lines].join('\n') + '\n', 'utf8');
+}
+
 function findOutputFile(jobId, filename) {
     // Security: sanitize filename to prevent path traversal
     const safe = path.basename(filename);
@@ -291,6 +299,27 @@ app.patch('/api/jobs/:id/approve', (req, res) => {
     if (job) job.status = 'approved';
     // The Python job_tracker will also update the CSV
     res.json({ job_id: req.params.id, status: 'approved' });
+});
+
+/**
+ * DELETE /api/jobs/:id
+ * Remove a job from the history log (jobs.csv).
+ */
+app.delete('/api/jobs/:id', (req, res) => {
+    try {
+        const id   = req.params.id;
+        const jobs = readJobsCsv();
+        const filtered = jobs.filter(j => (j.job_id || '').trim() !== id.trim());
+        if (filtered.length === jobs.length) {
+            return res.status(404).json({ error: 'Job not found' });
+        }
+        // writeJobsCsv expects original order (readJobsCsv returns reversed)
+        writeJobsCsv(filtered.reverse());
+        activeJobs.delete(id);
+        res.json({ deleted: id });
+    } catch (err) {
+        res.status(500).json({ error: `Could not delete job: ${err.message}` });
+    }
 });
 
 /**

@@ -415,6 +415,26 @@ function approveCurrentJob() {
 }
 
 /* ============================================================
+   DELETE JOB
+   ============================================================ */
+async function deleteJob(jobId) {
+  if (!confirm(`Delete job ${jobId} from history? This cannot be undone.`)) return;
+
+  try {
+    const res  = await fetch(`/api/jobs/${encodeURIComponent(jobId)}`, { method: 'DELETE' });
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || `Server error ${res.status}`);
+
+    showToast(`Job ${jobId} deleted.`, 'info');
+    loadJobHistory();
+  } catch (err) {
+    console.error('deleteJob error:', err);
+    showToast(`Could not delete job: ${err.message}`, 'error');
+  }
+}
+
+/* ============================================================
    CANCEL JOB
    ============================================================ */
 async function cancelJob() {
@@ -547,7 +567,11 @@ function renderHistoryActions(job, id, status, files, handle) {
              </button>`;
   }
 
-  if (!html) html = '<span style="color:var(--muted-text);font-size:0.8rem;">—</span>';
+  html += ` <button class="btn btn-danger" style="font-size:0.78rem; padding:5px 10px;"
+              onclick="deleteJob('${escapeHtml(id)}')">
+              &#128465; Delete
+            </button>`;
+
   return html;
 }
 
